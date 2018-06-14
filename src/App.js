@@ -6,14 +6,7 @@ class App extends Component {
     
     this.state = {
       selected: 0,
-      votes: {
-        0:0,
-        1:0,
-        2:0,
-        3:0,
-        4:0,
-        5:0
-      }
+      votes: [0,0,0,0,0,0]
     }
   }
 
@@ -25,11 +18,23 @@ class App extends Component {
   }
 
   handleVoteClick = () => {
-    const copyofVotes = {...this.state.votes};
+    const copyofVotes = [...this.state.votes];
     copyofVotes[this.state.selected] += 1;
     this.setState({
       votes: copyofVotes
     })
+  }
+
+  mostVotes = () => {
+    let biggest = -1;
+    let indexOfBiggest = -1;
+    this.state.votes.forEach((vote, index) => {
+      if (vote > biggest) {
+        biggest = vote;
+        indexOfBiggest = index;
+      }
+    })
+    return indexOfBiggest;
   }
 
   render() {
@@ -47,6 +52,8 @@ class App extends Component {
             next anecdote
           </button>
         </p>
+        <p>anecdote with most votes</p>
+        <p>{this.props.anecdotes[this.mostVotes()]}</p>
       </div>
     );
   }
